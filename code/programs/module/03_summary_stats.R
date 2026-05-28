@@ -4,6 +4,7 @@
 # =============================================================================
 
 library(tidyverse)
+library(knitr)
 
 # -----------------------------------------------------------------------------
 # Load
@@ -47,41 +48,39 @@ summary_stats <- df |>
   )
 
 # -----------------------------------------------------------------------------
-# Print
+# Build summary table
 # -----------------------------------------------------------------------------
 
-cat("=== Summary Statistics ===\n\n")
-cat("Year:        ", summary_stats$year, "\n")
-cat("N countries: ", summary_stats$n_countries, "\n\n")
+stats_table <- tibble(
+  Indicator = c("Life Expectancy (years)", "Forest Area (% of land)", "Urban Population (% of total)"),
+  Min       = round(c(summary_stats$le_min,    summary_stats$forest_min,    summary_stats$urban_min),    1),
+  Q1        = round(c(summary_stats$le_q1,     summary_stats$forest_q1,     summary_stats$urban_q1),     1),
+  Median    = round(c(summary_stats$le_median, summary_stats$forest_median, summary_stats$urban_median), 1),
+  Q3        = round(c(summary_stats$le_q3,     summary_stats$forest_q3,     summary_stats$urban_q3),     1),
+  Max       = round(c(summary_stats$le_max,    summary_stats$forest_max,    summary_stats$urban_max),    1)
+)
 
-cat("Life Expectancy (years):\n")
-cat("  Min:", round(summary_stats$le_min, 1),
-    " Q1:", round(summary_stats$le_q1, 1),
-    " Median:", round(summary_stats$le_median, 1),
-    " Q3:", round(summary_stats$le_q3, 1),
-    " Max:", round(summary_stats$le_max, 1), "\n\n")
+cor_table <- tibble(
+  Comparison  = c("Forest Area vs Life Expectancy", "Urban Population vs Life Expectancy"),
+  Correlation = round(c(summary_stats$cor_forest_le, summary_stats$cor_urban_le), 3)
+)
 
-cat("Forest Area (% of land):\n")
-cat("  Min:", round(summary_stats$forest_min, 1),
-    " Q1:", round(summary_stats$forest_q1, 1),
-    " Median:", round(summary_stats$forest_median, 1),
-    " Q3:", round(summary_stats$forest_q3, 1),
-    " Max:", round(summary_stats$forest_max, 1), "\n\n")
+# -----------------------------------------------------------------------------
+# Print tables
+# -----------------------------------------------------------------------------
 
-cat("Urban Population (% of total):\n")
-cat("  Min:", round(summary_stats$urban_min, 1),
-    " Q1:", round(summary_stats$urban_q1, 1),
-    " Median:", round(summary_stats$urban_median, 1),
-    " Q3:", round(summary_stats$urban_q3, 1),
-    " Max:", round(summary_stats$urban_max, 1), "\n\n")
+cat("Year:", summary_stats$year, "  |  N countries:", summary_stats$n_countries, "\n\n")
 
-cat("Correlations with Life Expectancy:\n")
-cat("  Forest area: ", round(summary_stats$cor_forest_le, 3), "\n")
-cat("  Urban pop:   ", round(summary_stats$cor_urban_le, 3), "\n")
+cat("=== Five-Number Summary ===\n")
+print(kable(stats_table, format = "simple"))
+
+cat("\n=== Correlations with Life Expectancy ===\n")
+print(kable(cor_table, format = "simple"))
 
 # -----------------------------------------------------------------------------
 # Save
 # -----------------------------------------------------------------------------
 
-write_csv(summary_stats, "results/statistics/summary_stats.csv")
-cat("\nSaved to results/statistics/summary_stats.csv\n")
+write_csv(stats_table, "results/statistics/summary_stats.csv")
+write_csv(cor_table,   "results/statistics/correlations.csv")
+cat("\nSaved to results/statistics/\n")
