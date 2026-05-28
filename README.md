@@ -2,13 +2,13 @@
 
 **Author:** Ali Hunter
 **Date:** May 2026
-**Contact:** [email]
+**Contact:** hfd3hp@virginia.edu
 
 ---
 
 ## Overview
 
-This repository contains the data and replication code for [project title]. The analysis uses 2023 World Bank data to examine the relationship between life expectancy, forest cover, and urbanization across countries. All data are drawn from the World Development Indicators (WDI) API and processed entirely in R.
+This repository contains the data and replication code for the Day 3 project on economic growth and the environment. The analysis uses 2023 World Bank data to examine the relationship between life expectancy, forest cover, and urbanization across countries. All data are drawn from the World Development Indicators (WDI) API and processed entirely in R.
 
 ---
 
