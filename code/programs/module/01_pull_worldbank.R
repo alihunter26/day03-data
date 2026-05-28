@@ -11,34 +11,19 @@ library(tidyverse)
 # -----------------------------------------------------------------------------
 
 indicators <- c(
-  # Economic
-  gdp_pc_usd        = "NY.GDP.PCAP.CD",      # GDP per capita (current USD)
-  gdp_growth        = "NY.GDP.MKTP.KD.ZG",   # GDP growth (annual %)
-  trade_pct_gdp     = "NE.TRD.GNFS.ZS",      # Trade (% of GDP)
-  gni_pc            = "NY.GNP.PCAP.CD",       # GNI per capita (current USD)
-
-  # Environmental
-  co2_pc            = "EN.ATM.CO2E.PC",       # CO2 emissions per capita (metric tons)
-  co2_kt            = "EN.ATM.CO2E.KT",       # CO2 emissions total (kt)
-  renewable_pct     = "EG.FEC.RNEW.ZS",       # Renewable energy (% of total)
-  energy_use_pc     = "EG.USE.PCAP.KG.OE",    # Energy use per capita (kg oil equiv)
-  forest_pct        = "AG.LND.FRST.ZS",       # Forest area (% of land)
-  pm25              = "EN.ATM.PM25.MC.M3",     # PM2.5 air pollution (mcg/m3)
-  electricity_access= "EG.ELC.ACCS.ZS",       # Access to electricity (% of pop)
-
-  # Demographic / control variables
-  population        = "SP.POP.TOTL",          # Total population
-  urban_pct         = "SP.URB.TOTL.IN.ZS"     # Urban population (% of total)
+  life_expectancy = "SP.DYN.LE00.IN",   # Life expectancy at birth (years)
+  forest_pct      = "AG.LND.FRST.ZS",   # Forest area (% of land)
+  urban_pct       = "SP.URB.TOTL.IN.ZS" # Urban population (% of total)
 )
 
 # -----------------------------------------------------------------------------
-# Pull
+# Pull most recent year only
 # -----------------------------------------------------------------------------
 
 df_raw <- WDI(
   country   = "all",
   indicator = indicators,
-  start     = 2000,
+  start     = 2023,
   end       = 2023,
   extra     = TRUE    # appends region, income group, iso2/iso3 codes
 )
@@ -47,9 +32,8 @@ df_raw <- WDI(
 # Quick checks
 # -----------------------------------------------------------------------------
 
-cat("Rows pulled:     ", nrow(df_raw), "\n")
-cat("Countries:       ", n_distinct(df_raw$country), "\n")
-cat("Years covered:   ", min(df_raw$year), "–", max(df_raw$year), "\n")
+cat("Rows pulled:   ", nrow(df_raw), "\n")
+cat("Countries:     ", n_distinct(df_raw$country), "\n")
 cat("Missing by column:\n")
 df_raw |>
   select(all_of(names(indicators))) |>
