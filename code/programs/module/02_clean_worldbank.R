@@ -9,18 +9,16 @@ library(tidyverse)
 # Load
 # -----------------------------------------------------------------------------
 
-df_raw <- read_csv("data/documentation/worldbank_raw.csv")
+df_raw <- read_csv("data/documentation/worldbank_raw.csv", show_col_types = FALSE)
 
 # -----------------------------------------------------------------------------
-# Drop aggregates — keep countries only
+# Drop rows where all three variables are missing
 # -----------------------------------------------------------------------------
 
 df_clean <- df_raw |>
-  filter(!is.na(iso2c)) |>
-  filter(nchar(iso2c) == 2) |>
-  filter(region != "Aggregates") |>
-  select(country, year, life_expectancy, forest_pct, urban_pct) |>
-  filter(rowSums(!is.na(select(., life_expectancy, forest_pct, urban_pct))) > 0)
+  filter(if_any(c(life_expectancy, forest_pct, urban_pct), ~ !is.na(.)))
+
+  print(df_clean$country)
 
 # -----------------------------------------------------------------------------
 # Quick checks
