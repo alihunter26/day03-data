@@ -16,9 +16,9 @@ df_raw <- read_csv("data/documentation/worldbank_raw.csv", show_col_types = FALS
 # -----------------------------------------------------------------------------
 
 df_clean <- df_raw |>
+  filter(!is.na(iso2c), nchar(iso2c) == 2) |>
+  select(-iso2c) |>
   filter(if_any(c(life_expectancy, forest_pct, urban_pct), ~ !is.na(.)))
-
-  print(df_clean$country)
 
 # -----------------------------------------------------------------------------
 # Quick checks

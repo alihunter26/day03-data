@@ -36,7 +36,7 @@ df_raw <- WDI(
 # -----------------------------------------------------------------------------
 
 df_raw <- df_raw |>
-  select(country, year, life_expectancy, forest_pct, urban_pct)
+  select(iso2c, country, year, life_expectancy, forest_pct, urban_pct)
 
 # -----------------------------------------------------------------------------
 # Quick checks
