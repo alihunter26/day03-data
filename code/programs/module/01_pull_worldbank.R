@@ -3,6 +3,8 @@
 # Pull environmental and economic indicators from the World Bank via WDI
 # =============================================================================
 
+install.packages("WDI", repos = "https://cloud.r-project.org")
+install.packages("tidyverse", repos = "https://cloud.r-project.org")
 library(WDI)
 library(tidyverse)
 
