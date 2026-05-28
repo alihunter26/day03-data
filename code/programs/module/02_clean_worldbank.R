@@ -20,6 +20,18 @@ df_clean <- df_raw |>
   select(-iso2c) |>
   filter(if_any(c(life_expectancy, forest_pct, urban_pct), ~ !is.na(.)))
 
+df_clean <- df_clean |>
+  filter(!country %in% c(
+    "Early-demographic dividend",
+    "Late-demographic dividend",
+    "World",
+    "Low income",
+    "Arab World",
+    "Euro area",
+    "Europe & Central Asia"
+
+    "
+  ))
 # -----------------------------------------------------------------------------
 # Quick checks
 # -----------------------------------------------------------------------------
