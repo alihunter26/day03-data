@@ -5,6 +5,7 @@
 
 install.packages("WDI", repos = "https://cloud.r-project.org")
 install.packages("tidyverse", repos = "https://cloud.r-project.org")
+
 library(WDI)
 library(tidyverse)
 
@@ -27,8 +28,15 @@ df_raw <- WDI(
   indicator = indicators,
   start     = 2023,
   end       = 2023,
-  extra     = TRUE    # appends region, income group, iso2/iso3 codes
+  extra     = FALSE
 )
+
+# -----------------------------------------------------------------------------
+# Keep country name, year, and three variables only
+# -----------------------------------------------------------------------------
+
+df_raw <- df_raw |>
+  select(country, year, life_expectancy, forest_pct, urban_pct)
 
 # -----------------------------------------------------------------------------
 # Quick checks
@@ -38,8 +46,7 @@ cat("Rows pulled:   ", nrow(df_raw), "\n")
 cat("Countries:     ", n_distinct(df_raw$country), "\n")
 cat("Missing by column:\n")
 df_raw |>
-  select(all_of(names(indicators))) |>
-  summarise(across(everything(), ~ sum(is.na(.)))) |>
+  summarise(across(c(life_expectancy, forest_pct, urban_pct), ~ sum(is.na(.)))) |>
   pivot_longer(everything(), names_to = "indicator", values_to = "n_missing") |>
   print(n = Inf)
 

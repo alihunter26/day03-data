@@ -15,27 +15,11 @@ df_raw <- read_csv("data/documentation/worldbank_raw.csv")
 # Drop aggregates — keep countries only
 # -----------------------------------------------------------------------------
 
-df_countries <- df_raw |>
+df_clean <- df_raw |>
   filter(!is.na(iso2c)) |>
   filter(nchar(iso2c) == 2) |>
-  filter(region != "Aggregates")
-
-# -----------------------------------------------------------------------------
-# Select and rename
-# -----------------------------------------------------------------------------
-
-df_clean <- df_countries |>
-  select(
-    iso2c, iso3c, country, year,
-    region, income,
-    life_expectancy, forest_pct, urban_pct
-  )
-
-# -----------------------------------------------------------------------------
-# Drop rows where all three variables are missing
-# -----------------------------------------------------------------------------
-
-df_clean <- df_clean |>
+  filter(region != "Aggregates") |>
+  select(country, year, life_expectancy, forest_pct, urban_pct) |>
   filter(rowSums(!is.na(select(., life_expectancy, forest_pct, urban_pct))) > 0)
 
 # -----------------------------------------------------------------------------
