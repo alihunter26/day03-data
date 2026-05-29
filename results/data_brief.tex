@@ -1,0 +1,94 @@
+\documentclass[11pt]{article}
+
+% Packages
+\usepackage[margin=1in]{geometry}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{parskip}
+\usepackage{setspace}
+\usepackage{hyperref}
+\usepackage{titlesec}
+\usepackage{lmodern}
+
+% Section formatting
+\titleformat{\section}{\large\bfseries}{}{0em}{}[\titlerule]
+\titlespacing{\section}{0pt}{12pt}{6pt}
+
+% Remove page numbers
+\pagestyle{empty}
+
+% ─────────────────────────────────────────────────────────────────────────────
+
+\begin{document}
+
+% Title block
+\begin{center}
+    {\LARGE \textbf{Data Brief}}\\[6pt]
+    {\large Life Expectancy, Urbanization, and Forest Cover}\\[4pt]
+    {\normalsize Ali Hunter \quad | \quad EIL Summer 2026 \quad | \quad May 2026}
+\end{center}
+
+\vspace{10pt}
+
+% Opening
+This brief examines how life expectancy varies across countries and how it relates to two indicators — urbanization and forest cover — using 2023 World Bank data. The figures below summarize the key patterns across approximately 180 countries.
+
+\vspace{6pt}
+\hrule
+\vspace{10pt}
+
+% ── Indicator 1 ──────────────────────────────────────────────────────────────
+\section*{Indicator 1: Life Expectancy by Region}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\textwidth]{selected_fig3_boxplot_life_by_region.png}
+\end{figure}
+
+Life expectancy varies sharply by region. Europe has the highest median and the tightest distribution, meaning most European countries cluster near the top. Africa has the lowest median and the widest spread, reflecting large within-continent variation. Asia and the Americas sit in the middle, each with notable outliers at both ends.
+
+\vspace{10pt}
+
+% ── Indicator 2 ──────────────────────────────────────────────────────────────
+\section*{Indicator 2: Urbanization and Life Expectancy}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\textwidth]{selected_fig1_scatter_life_urban.png}
+\end{figure}
+
+More urbanized countries tend to have longer life expectancies. The upward trend is consistent but not perfectly linear — several highly urbanized countries still have relatively low life expectancy, suggesting urbanization alone does not determine health outcomes. The pattern likely reflects the broader economic development that tends to accompany urbanization.
+
+\vspace{10pt}
+
+% ── Indicator 3 ──────────────────────────────────────────────────────────────
+\section*{Indicator 3: Forest Cover Across the World}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\textwidth]{selected_fig2_choropleth_forest.png}
+\end{figure}
+
+Forest cover is highly uneven across the globe. Central Africa, South and Southeast Asia, and the Amazon basin in South America are the most densely forested regions. The Middle East, North Africa, and Central Asia have almost no forest cover. This geographic variation reflects both climate and land use, and is largely independent of income level.
+
+\vspace{10pt}
+
+% ── Sources ──────────────────────────────────────────────────────────────────
+\section*{Sources}
+
+\begin{table}[h]
+\centering
+\begin{tabular}{lll}
+\toprule
+\textbf{Variable} & \textbf{Indicator Code} & \textbf{Source} \\
+\midrule
+Life expectancy at birth (years) & \texttt{SP.DYN.LE00.IN} & World Bank WDI \\
+Forest area (\% of land area)    & \texttt{AG.LND.FRST.ZS} & World Bank WDI \\
+Urban population (\% of total)   & \texttt{SP.URB.TOTL.IN.ZS} & World Bank WDI \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+All data are from the World Bank World Development Indicators (2023) and are publicly available at \href{https://data.worldbank.org}{data.worldbank.org} under the Creative Commons Attribution 4.0 International License.
+
+\end{document}
