@@ -9,10 +9,28 @@ library(tidyverse)
 # Load
 # -----------------------------------------------------------------------------
 
-df_raw <- read_csv("data/documentation/worldbank_raw.csv", show_col_types = FALSE)
+df_raw <- read_csv("/Users/alihunter/Documents/EIL Summer/Group-Data-Brief_Day05/data/raw/wdi_raw.csv", show_col_types = FALSE)
 
 # -----------------------------------------------------------------------------
-# Drop rows where all three variables are missing
+# Rename WDI indicator codes to readable names
+# -----------------------------------------------------------------------------
+
+df_raw <- df_raw |>
+  rename(
+    gdp_per_capita    = NY.GDP.PCAP.CD,
+    electricity_access = EG.ELC.ACCS.ZS,
+    renewable_elec    = EG.ELC.RNWX.ZS,
+    life_expectancy   = SP.DYN.LE00.IN,
+    forest_pct        = AG.LND.FRST.ZS,
+    urban_pct         = SP.URB.TOTL.IN.ZS,
+    pm25_pollution    = EN.ATM.PM25.MC.M3,
+    co2_per_gdp       = EN.GHG.CO2.RT.GDP.PP.KD,
+    maternal_mortality = SH.STA.MMRT,
+    energy_per_capita = EG.USE.PCAP.KG.OE
+  )
+
+# -----------------------------------------------------------------------------
+# Drop rows where all variables are missing
 # -----------------------------------------------------------------------------
 
 aggregates <- c(
@@ -54,19 +72,31 @@ aggregates <- c(
   "Small states", "World"
 )
 
+analysis_vars <- c(
+  "gdp_per_capita", "electricity_access", "renewable_elec",
+  "life_expectancy", "forest_pct", "urban_pct",
+  "pm25_pollution", "co2_per_gdp", "maternal_mortality", "energy_per_capita"
+)
+
 df_clean <- df_raw |>
   filter(!is.na(iso2c), nchar(iso2c) == 2) |>
   filter(!country %in% aggregates) |>
   select(-iso2c) |>
-  filter(if_any(c(life_expectancy, forest_pct, urban_pct), ~ !is.na(.)))
+  filter(if_any(all_of(analysis_vars), ~ !is.na(.)))
 
 # -----------------------------------------------------------------------------
 # Quick checks
 # -----------------------------------------------------------------------------
 
 cat("Countries after cleaning: ", n_distinct(df_clean$country), "\n")
-cat("Year:                     ", unique(df_clean$year), "\n")
+cat("Years:                    ", paste(range(df_clean$year), collapse = " - "), "\n")
 cat("Rows:                     ", nrow(df_clean), "\n")
+cat("\nMissingness by variable:\n")
+df_clean |>
+  summarise(across(all_of(analysis_vars), ~ mean(is.na(.)) * 100)) |>
+  pivot_longer(everything(), names_to = "variable", values_to = "pct_missing") |>
+  mutate(pct_missing = round(pct_missing, 1)) |>
+  print(n = Inf)
 
 # -----------------------------------------------------------------------------
 # Save
